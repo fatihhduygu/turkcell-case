@@ -24,3 +24,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Bip"
 include(":app")
+include(":core:webrtc")
+include(":core:common")
+include(":core:ui")
