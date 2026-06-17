@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 sealed class AppDestination : NavKey {
     @Serializable data object Splash : AppDestination()
     @Serializable data object Home : AppDestination()
-    @Serializable data object Host : AppDestination()
-    @Serializable data object Client : AppDestination()
+    @Serializable data object IncomingCall : AppDestination()
+    @Serializable data object OutgoingCall : AppDestination()
+    @Serializable data object ActiveCall : AppDestination()
 }
