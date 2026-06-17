@@ -4,9 +4,7 @@ plugins {
 
 android {
     namespace = "com.turkcell.bip.core.ui"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 24

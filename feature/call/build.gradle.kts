@@ -6,17 +6,19 @@ plugins {
 }
 
 android {
-    namespace = "com.turkcell.bip.feature.splash"
+    namespace = "com.turkcell.bip.feature.call"
     compileSdk = 37
 
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         compose = true
     }
@@ -24,12 +26,13 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
+    implementation(project(":core:webrtc"))
+    implementation(libs.webrtc)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.animation)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.android)

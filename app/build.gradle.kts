@@ -36,10 +36,12 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:webrtc"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:home"))
     implementation(project(":feature:host"))
     implementation(project(":feature:client"))
+    implementation(project(":feature:call"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
