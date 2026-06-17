@@ -29,10 +29,10 @@ class CallManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val signalingServer: CallSignalingServer,
     private val signalingClient: CallSignalingClient,
-    private val gson: Gson
+    private val gson: Gson,
+    private val rtcClientFactory: BipRtcClientFactory
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-    private val application = context as Application
 
     private val _callState = MutableStateFlow<CallState>(CallState.Idle)
     val callState: StateFlow<CallState> = _callState.asStateFlow()
@@ -53,8 +53,7 @@ class CallManager @Inject constructor(
     val localIpAddress: String get() = getLocalIpAddress(context) ?: "0.0.0.0"
 
     private val rtcClient: BipRtcClient by lazy {
-        BipRtcClient(
-            application = application,
+        rtcClientFactory.create(
             observer = object : BipPeerConnectionObserver() {
                 override fun onIceCandidate(p0: IceCandidate?) {
                     super.onIceCandidate(p0)
