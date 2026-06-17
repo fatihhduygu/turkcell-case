@@ -122,6 +122,10 @@ fun HomeScreen(
                 placeholder = { Text("192.168.1.x:3015") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = uiState.selfCallError,
+                supportingText = if (uiState.selfCallError) {
+                    { Text("Kendinizi arayamazsınız") }
+                } else null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Uri,
                     imeAction = ImeAction.Done

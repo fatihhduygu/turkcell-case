@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 data class HomeUiState(
     val localAddress: String = "Sunucu başlatılıyor...",
     val targetAddress: String = "",
-    val connectionError: Boolean = false
+    val connectionError: Boolean = false,
+    val selfCallError: Boolean = false
 ) : UiState
 
 sealed interface HomeIntent : UiIntent {
@@ -75,18 +76,23 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when (intent) {
                 is HomeIntent.OnTargetAddressChanged ->
-                    setState { copy(targetAddress = intent.address, connectionError = false) }
+                    setState { copy(targetAddress = intent.address, connectionError = false, selfCallError = false) }
 
                 HomeIntent.OnCallClick -> {
                     val address = state.value.targetAddress.trim()
                     if (address.isNotBlank()) {
-                        callManager.makeCall(address)
-                        sendEffect(HomeEffect.NavigateToOutgoingCall)
+                        if (address == state.value.localAddress) {
+                            setState { copy(selfCallError = true) }
+                        } else {
+                            setState { copy(selfCallError = false) }
+                            callManager.makeCall(address)
+                            sendEffect(HomeEffect.NavigateToOutgoingCall)
+                        }
                     }
                 }
 
                 HomeIntent.DismissError ->
-                    setState { copy(connectionError = false) }
+                    setState { copy(connectionError = false, selfCallError = false) }
             }
         }
     }
