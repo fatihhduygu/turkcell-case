@@ -105,7 +105,7 @@ class CallManager @Inject constructor(
                 scope.launch {
                     val current = _callState.value
                     if (current is CallState.CallActive || current is CallState.IncomingCall) {
-                        _callState.emit(CallState.CallEnded)
+                        cleanupCall()
                     }
                 }
             }
@@ -129,7 +129,7 @@ class CallManager @Inject constructor(
                 scope.launch {
                     val current = _callState.value
                     if (current !is CallState.Idle && current !is CallState.CallEnded) {
-                        _callState.emit(CallState.CallEnded)
+                        cleanupCall()
                     }
                 }
             }
@@ -257,7 +257,7 @@ class CallManager @Inject constructor(
         runCatching { gson.fromJson(message.data.toString(), IceCandidate::class.java) }
             .getOrNull()
 
-    private fun cleanupCall() {
+    private suspend fun cleanupCall() {
         Log.d(TAG, "Cleaning up call")
         remoteVideoTrack?.let { track ->
             remoteSurface?.let { track.removeSink(it) }
@@ -271,7 +271,7 @@ class CallManager @Inject constructor(
         runCatching { rtcClient.resetForNewCall() }
         signalingClient.disconnect()
         setAudioMode(false)
-        scope.launch { _callState.emit(CallState.CallEnded) }
+        _callState.emit(CallState.CallEnded)
     }
 
     private fun sendSignalingMessage(message: SignalingMessage) {

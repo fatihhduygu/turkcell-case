@@ -7,8 +7,14 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.turkcell.bip.core.webrtc.CallManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CallForegroundService : Service() {
+
+    @Inject lateinit var callManager: CallManager
 
     companion object {
         const val CHANNEL_ID = "bip_call_channel"
@@ -34,6 +40,12 @@ class CallForegroundService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        callManager.endCall()
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+    }
 
     private fun createNotificationChannel() {
         val channel = NotificationChannel(
