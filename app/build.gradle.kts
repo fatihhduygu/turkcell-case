@@ -35,7 +35,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
     implementation(project(":core:webrtc"))
     implementation(project(":feature:splash"))
     implementation(project(":feature:home"))

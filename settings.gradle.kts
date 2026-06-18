@@ -26,7 +26,6 @@ rootProject.name = "Bip"
 include(":app")
 include(":core:webrtc")
 include(":core:common")
-include(":core:ui")
 include(":feature:splash")
 include(":feature:home")
 include(":feature:host")
